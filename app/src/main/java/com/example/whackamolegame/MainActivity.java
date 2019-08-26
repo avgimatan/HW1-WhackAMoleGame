@@ -1,6 +1,7 @@
 package com.example.whackamolegame;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +16,7 @@ import java.io.Serializable;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, Serializable {
 
     Player player = new Player();
-    LinearLayout mainLayout;
+    ConstraintLayout mainLayout;
     EditText editTextName;
     Button startButton;
 
