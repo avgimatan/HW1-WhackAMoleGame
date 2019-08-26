@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/dirt_background"
+    android:gravity="center"
+    tools:context=".EndGameActivity">
+
+    <TextView
+        android:id="@+id/txt_name_final"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lobster_two"
+        android:text="player name"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:layout_margin="30dp"
+        android:textSize="@android:dimen/app_icon_size"/>
+
+    <TextView
+        android:id="@+id/txt_announcement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lobster_two"
+        android:textColor="@color/white"
+        android:text="has won\\lost"
+        android:gravity="center"
+        android:layout_margin="30dp"
+        android:textSize="@android:dimen/app_icon_size"/>
+
+    <TextView
+        android:id="@+id/txt_points_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lobster_two"
+        android:textColor="@color/white"
+        android:text="points"
+        android:gravity="center"
+        android:layout_margin="30dp"
+        android:textSize="@android:dimen/app_icon_size"/>
+
+    <Button
+        android:id="@+id/btn_play_again"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lobster_two"
+        android:layout_margin="30dp"
+        android:text="Play Again"/>
+
+
+
+</LinearLayout>

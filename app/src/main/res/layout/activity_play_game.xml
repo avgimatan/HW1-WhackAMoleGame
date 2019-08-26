@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:id="@+id/activity_play_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PlayGameActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@android:dimen/app_icon_size"
+        android:orientation="horizontal"
+        android:background="@color/DarkKhaki"
+        android:weightSum="2">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/lobster_two"
+            android:id="@+id/txt_timer"
+            android:text="30S"
+            android:textSize="25dp"
+            android:gravity="left"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/lobster_two"
+            android:text="Time Left:"
+            android:gravity="left"
+            android:textSize="25dp"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@android:dimen/app_icon_size"
+        android:orientation="horizontal"
+        android:background="@color/DarkKhaki"
+        android:gravity="top"
+        android:weightSum="2">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/lobster_two"
+            android:id="@+id/txt_score"
+            android:text="score"
+            android:textSize="25dp"
+            android:gravity="left"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/lobster_two"
+            android:text="Score:"
+            android:textSize="25dp"
+            android:gravity=""
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@android:dimen/app_icon_size"
+        android:orientation="horizontal"
+        android:background="@color/DarkKhaki"
+        android:weightSum="2">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/lobster_two"
+            android:id="@+id/txt_miss"
+            android:text="miss"
+            android:textSize="25dp"
+            android:gravity="left"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/lobster_two"
+            android:text="Miss: "
+            android:gravity="left"
+            android:textSize="25dp"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <GridLayout
+        android:id="@+id/grid_layout_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="80dp"
+        android:columnCount="3"
+        android:rowCount="3">
+
+        <Button
+            android:id="@+id/btn_00"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/mole_hole_new"/>
+
+        <Button
+            android:id="@+id/btn_01"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/mole_hole_new"/>
+
+        <Button
+            android:id="@+id/btn_02"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/mole_hole_new"/>
+
+        <Button
+            android:id="@+id/btn_10"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/mole_hole_new"/>
+
+        <Button
+            android:id="@+id/btn_11"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/mole_hole_new"/>
+
+        <Button
+            android:id="@+id/btn_12"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/mole_hole_new"/>
+
+        <Button
+            android:id="@+id/btn_20"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/mole_hole_new"/>
+
+        <Button
+            android:id="@+id/btn_21"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/mole_hole_new"/>
+
+        <Button
+            android:id="@+id/btn_22"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/mole_hole_new"/>
+
+
+    </GridLayout>
+
+</LinearLayout>
