@@ -48,7 +48,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
 
                 if((millisUntilFinished/1000) == 5 )
                     playLastSecondsSound(millisUntilFinished/1000);
-                else if((millisUntilFinished/1000) == 0) // TODO: check if need this
+                else if((millisUntilFinished/1000) == 0)
                     mp_lastMin.stop();
 
                 if ((millisUntilFinished/1000) <= 5 )
