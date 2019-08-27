@@ -45,8 +45,8 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
                 txtTimer.setText(String.valueOf(millisUntilFinished / 1000));
                 if ((millisUntilFinished/1000) <= 5 )
                     txtTimer.setTextColor(Color.RED);
-                txtScore.setText(String.valueOf(player.getScore()));
-                txtMiss.setText(String.valueOf(player.getMisses()) + " / 3");
+                txtScore.setText(WIN_SCORE + " / " + String.valueOf(player.getScore()));
+                txtMiss.setText(MAX_MISSES + " / " + String.valueOf(player.getMisses()));
                 popTime--;
                 if(popTime == 0) {
                     button[location].setBackgroundResource(R.drawable.mole_hole_new);
