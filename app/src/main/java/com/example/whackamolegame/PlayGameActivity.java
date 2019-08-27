@@ -3,6 +3,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -20,6 +21,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
     GridLayout grid;
     Button[] button;
     CountDownTimer timer;
+    MediaPlayer mp_lastMin, mp_hit, mp_miss;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +45,15 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
 
             public void onTick(long millisUntilFinished) {
                 txtTimer.setText(String.valueOf(millisUntilFinished / 1000));
+
+                if((millisUntilFinished/1000) == 5 )
+                    playLastSecondsSound(millisUntilFinished/1000);
+                else if((millisUntilFinished/1000) == 0) // TODO: check if need this
+                    mp_lastMin.stop();
+
                 if ((millisUntilFinished/1000) <= 5 )
                     txtTimer.setTextColor(Color.RED);
+
                 txtScore.setText(WIN_SCORE + " / " + String.valueOf(player.getScore()));
                 txtMiss.setText(MAX_MISSES + " / " + String.valueOf(player.getMisses()));
                 popTime--;
@@ -82,11 +91,46 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
         finish();
     }
 
+    public void playLastSecondsSound(long sec) {
+
+        new Runnable(){
+            @Override
+            public void run() {
+                mp_lastMin = MediaPlayer.create(getBaseContext(), (R.raw.tick));
+                mp_lastMin.start();
+            }
+        }.run();
+
+    }
+
+    public void playHitSound() {
+
+        new Runnable(){
+            @Override
+            public void run() {
+                mp_hit = MediaPlayer.create(getBaseContext(), (R.raw.sword_hit));
+                mp_hit.start();
+            }
+        }.run();
+    }
+
+    public void playMissSound() {
+
+        new Runnable(){
+            @Override
+            public void run() {
+                mp_miss = MediaPlayer.create(getBaseContext(), (R.raw.hodvent));
+                mp_miss.start();
+            }
+        }.run();
+    }
+
     @Override
     public void onClick(View view) {
         if(view instanceof Button) {
             Button clickedButton = findViewById(view.getId());
             if(checkHit(clickedButton)) {
+                playHitSound();
                 player.increaseScore();
                 clickedButton.setBackgroundResource(R.drawable.mole_hole_new);
                 if(player.getScore() >= WIN_SCORE) {
@@ -94,6 +138,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
                 }
             }
             else {
+                playMissSound();
                 player.increaseMisses();
                 if(player.getMisses() >= MAX_MISSES) {
                     gameOver();
