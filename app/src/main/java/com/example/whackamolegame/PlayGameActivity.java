@@ -54,8 +54,8 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
                 if ((millisUntilFinished/1000) <= 5 )
                     txtTimer.setTextColor(Color.RED);
 
-                txtScore.setText(WIN_SCORE + " / " + String.valueOf(player.getScore()));
-                txtMiss.setText(MAX_MISSES + " / " + String.valueOf(player.getMisses()));
+                txtScore.setText(String.valueOf(player.getScore()) + " / " + WIN_SCORE);
+                txtMiss.setText(String.valueOf(player.getMisses()) + " / " + MAX_MISSES);
                 popTime--;
                 if(popTime == 0) {
                     button[location].setBackgroundResource(R.drawable.mole_hole_new);
@@ -64,6 +64,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
             }
 
             public void onFinish() {
+                playLoseSound();
                 gameOver();
             }
 
@@ -125,6 +126,29 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
         }.run();
     }
 
+    public void playWinSound() {
+
+        new Runnable(){
+            @Override
+            public void run() {
+                mp_miss = MediaPlayer.create(getBaseContext(), (R.raw.applause));
+                mp_miss.start();
+            }
+        }.run();
+    }
+
+    public void playLoseSound() {
+
+        new Runnable(){
+            @Override
+            public void run() {
+                mp_miss = MediaPlayer.create(getBaseContext(), (R.raw.booz));
+                mp_miss.start();
+            }
+        }.run();
+    }
+
+
     @Override
     public void onClick(View view) {
         if(view instanceof Button) {
@@ -134,6 +158,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
                 player.increaseScore();
                 clickedButton.setBackgroundResource(R.drawable.mole_hole_new);
                 if(player.getScore() >= WIN_SCORE) {
+                    playWinSound();
                     gameOver();
                 }
             }
@@ -141,6 +166,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
                 playMissSound();
                 player.increaseMisses();
                 if(player.getMisses() >= MAX_MISSES) {
+                    playLoseSound();
                     gameOver();
                 }
             }

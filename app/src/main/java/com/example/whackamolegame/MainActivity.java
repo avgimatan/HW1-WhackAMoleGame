@@ -16,7 +16,7 @@ import java.io.Serializable;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, Serializable {
 
     Player player = new Player();
-    ConstraintLayout mainLayout;
+//TODO:    ConstraintLayout mainLayout;
     EditText editTextName;
     Button startButton;
 
@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mainLayout = findViewById(R.id.main_layout);
+    //TODO:     mainLayout = findViewById(R.id.main_layout);
         editTextName = findViewById(R.id.txt_name);
         startButton = findViewById(R.id.btn_start);
         startButton.setOnClickListener(this);

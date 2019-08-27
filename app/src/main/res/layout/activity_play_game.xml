@@ -15,10 +15,10 @@
         android:weightSum="2">
 
         <TextView
+            android:id="@+id/txt_timer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:fontFamily="@font/lobster_two"
-            android:id="@+id/txt_timer"
             android:text="30S"
             android:textSize="25dp"
             android:gravity="left"
@@ -51,6 +51,7 @@
             android:text="score"
             android:textSize="25dp"
             android:gravity="left"
+            android:textDirection="ltr"
             android:layout_weight="1"/>
 
         <TextView
@@ -79,6 +80,7 @@
             android:text="miss"
             android:textSize="25dp"
             android:gravity="left"
+            android:textDirection="ltr"
             android:layout_weight="1"/>
 
         <TextView
