@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/light_haki"
-    android:gravity="center"
     tools:context=".EndGameActivity">
 
     <TextView
@@ -16,8 +15,7 @@
         android:fontFamily="@font/lobster_two"
         android:text="player name"
         android:textColor="@color/white"
-        android:gravity="center"
-        android:layout_margin="30dp"
+        android:gravity="top"
         android:textSize="@android:dimen/app_icon_size"/>
 
     <TextView
@@ -27,8 +25,7 @@
         android:fontFamily="@font/lobster_two"
         android:textColor="@color/white"
         android:text="has won\\lost"
-        android:gravity="center"
-        android:layout_margin="30dp"
+        android:gravity="top"
         android:textSize="@android:dimen/app_icon_size"/>
 
     <TextView
@@ -38,9 +35,49 @@
         android:fontFamily="@font/lobster_two"
         android:textColor="@color/white"
         android:text="points"
-        android:gravity="center"
-        android:layout_margin="30dp"
+        android:gravity="top"
         android:textSize="@android:dimen/app_icon_size"/>
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/highScoreTable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="0,1"
+        android:gravity="center">
+
+        <TableRow
+            android:background="@color/white"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Name"
+                android:layout_margin="1dp"
+                android:layout_column="0"
+                android:background="#FFFFFF"
+                android:textStyle="bold"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Score"
+                android:layout_margin="1dp"
+                android:layout_column="1"
+                android:background="#FFFFFF"
+                android:textStyle="bold"
+                android:gravity="center" />
+
+
+            </TableRow>
+    </TableLayout>
 
     <Button
         android:id="@+id/btn_play_again"
@@ -49,8 +86,6 @@
         android:fontFamily="@font/lobster_two"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_margin="30dp"
-        android:text="Play Again"/>
-
-
+        android:text="Play Again" />
 
 </LinearLayout>

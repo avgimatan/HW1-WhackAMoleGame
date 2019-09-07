@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1097484036881",
+    "firebase_url": "https://whack-a-mole-252209.firebaseio.com",
+    "project_id": "whack-a-mole-252209",
+    "storage_bucket": "whack-a-mole-252209.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1097484036881:android:ff6ff5884a7ffe6489bab0",
+        "android_client_info": {
+          "package_name": "com.example.whackamolegame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1097484036881-d3amhbef2b91emojik669isheffs4vs9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.whackamolegame",
+            "certificate_hash": "816aef7732c3462fc58c4d59875c5304d94fb89e"
+          }
+        },
+        {
+          "client_id": "1097484036881-j7v9jj7g4hmfiucbvnt0nfo42qtig378.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnvm1VhMKyl3eONFu6dajQD0dk0-n-umo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1097484036881-j7v9jj7g4hmfiucbvnt0nfo42qtig378.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

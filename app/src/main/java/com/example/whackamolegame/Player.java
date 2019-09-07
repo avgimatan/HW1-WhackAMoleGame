@@ -42,6 +42,13 @@ class Player implements Serializable {
         this.score += 3;
     }
 
+    public void decreaseScore() {
+        if(this.score >= 3)
+            this.score -= 3;
+        else
+            this.score = 0;
+    }
+
     public void increaseMisses() {
         this.misses += 1;
     }

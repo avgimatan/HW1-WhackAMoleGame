@@ -15,14 +15,11 @@ import androidx.core.content.ContextCompat;
 
 import java.io.Serializable;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, Serializable {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, Serializable, Finals{
 
     private Player player = new Player();
     private EditText editTextName;
     private Button startButton;
-    private final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private static final String FINE_LOCATION = android.Manifest.permission.ACCESS_FINE_LOCATION;
-    private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +59,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void getGoogleMapsPermissions() {
         String[] permissions = {FINE_LOCATION, COARSE_LOCATION};
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(), FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (ContextCompat.checkSelfPermission(this.getApplicationContext(), COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
-            }
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(), FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this.getApplicationContext(), COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
