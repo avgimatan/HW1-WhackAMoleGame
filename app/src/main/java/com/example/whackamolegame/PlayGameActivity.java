@@ -1,5 +1,4 @@
 package com.example.whackamolegame;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,17 +10,19 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.Random;
 
 public class PlayGameActivity extends AppCompatActivity implements View.OnClickListener, Finals{
 
-    int popTime = 3, location = 0;
-    TextView txtTimer, txtScore, txtMiss;
-    Player player;
-    GridLayout grid;
-    Button[] button;
-    CountDownTimer timer;
-    MediaPlayer mp_lastMin, mp_hit, mp_miss;
+    private int popTime = 3, location = 0;
+    private TextView txtTimer, txtScore, txtMiss;
+    private Player player;
+    private GridLayout grid;
+    private Button[] button;
+    private CountDownTimer timer;
+    private MediaPlayer mp_lastMin, mp_hit, mp_miss;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,12 +71,11 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
 
         }.start();
 
-
     }
 
     public void showMole() {
         Random rand = new Random();
-        popTime = rand.nextInt(4-2) + 2;
+        popTime = rand.nextInt(3-1) + 1;
         location = rand.nextInt(8);
         button[location].setBackgroundResource(R.drawable.out_hole);
     }
@@ -172,5 +172,6 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
             }
         }
     }
+
 
 }
