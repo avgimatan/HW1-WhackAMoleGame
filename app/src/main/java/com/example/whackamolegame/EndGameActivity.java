@@ -1,18 +1,22 @@
 package com.example.whackamolegame;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -37,28 +41,26 @@ public class EndGameActivity extends AppCompatActivity implements View.OnClickLi
 
         player = (Player) getIntent().getSerializableExtra("player");
 
-        nameTextView = findViewById(R.id.txt_name_final);
         announcementTextView = findViewById(R.id.txt_announcement);
         pointsTextView = findViewById(R.id.txt_points_result);
         tableLayout = findViewById(R.id.highScoreTable);
         playAgainButton = findViewById(R.id.btn_play_again);
 
-        nameTextView.setText(player.getName());
-        announcementTextView.setText(checkAnnouncement(player));
-        pointsTextView.setText("Score: " + String.valueOf(player.getScore()));
+        if(isLose(player))
+            announcementTextView.setText("Game Over!");
+        else
+            announcementTextView.setText("You Lose!");
+        pointsTextView.setText("Your Score: " + String.valueOf(player.getScore()));
 
         fillTable();
 
         playAgainButton.setOnClickListener(this);
     }
 
-    public String checkAnnouncement(Player p) {
+    public boolean isLose(Player p) {
         if (p.getMisses() >= MAX_MISSES)
-            return "Has Lost";
-        else if (p.getScore() >= WIN_SCORE)
-            return "Has Won";
-        else
-            return "Has Lost";
+            return false;
+        return true;
     }
 
     public void playAgain() {
@@ -117,4 +119,16 @@ public class EndGameActivity extends AppCompatActivity implements View.OnClickLi
                 });
     }
 
+
+
+    public static class DebugExampleTwoFragment extends Fragment {
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            EditText v = new EditText(getActivity());
+            v.setText("Hello Fragment!");
+            return v;
+        }
+    }
 }

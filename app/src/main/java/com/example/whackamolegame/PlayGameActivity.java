@@ -1,6 +1,6 @@
 package com.example.whackamolegame;
 
-import android.Manifest;
+import android.animation.TimeInterpolator;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -33,13 +33,13 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private int popTime = 3, location = 0;
+    private int popTime = 3, location = 0, location2 = 0;
     private TextView txtTimer, txtScore, txtMiss;
     private Player player;
     private GridLayout grid;
     private Button[] button;
     private CountDownTimer timer;
-    private MediaPlayer mp_lastMin, mp_hit, mp_miss;
+    private MediaPlayer mp_lastMin, mp_hit, mp_miss, mp_bomb_hit;
 
     private Location currentLocation = null;
     private LocationManager locationManager;
@@ -77,17 +77,17 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
                 if ((millisUntilFinished / 1000) <= 5)
                     txtTimer.setTextColor(Color.RED);
 
-                txtScore.setText(String.valueOf(player.getScore()) + " / " + WIN_SCORE);
+                txtScore.setText(String.valueOf(player.getScore()));
                 txtMiss.setText(String.valueOf(player.getMisses()) + " / " + MAX_MISSES);
                 popTime--;
                 if (popTime == 0) {
                     button[location].setBackgroundResource(R.drawable.mole_hole_new);
+                    button[location2].setBackgroundResource(R.drawable.mole_hole_new);
                     showMole();
                 }
             }
 
             public void onFinish() {
-                playLoseSound();
                 gameOver();
             }
 
@@ -96,11 +96,16 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
 
     public void showMole() {
         Random rand = new Random();
-        int bombTime = rand.nextInt(4);
-        popTime = rand.nextInt(3 - 1) + 1;
+        int bombTime = rand.nextInt(6);
+        popTime = rand.nextInt(2 - 1) + 1;
         location = rand.nextInt(8);
         if(bombTime == BOMB_TIME)
             button[location].setBackgroundResource(R.drawable.bomb);
+        else if(bombTime == TOGETHER_TIME) {
+            button[location].setBackgroundResource(R.drawable.bomb);
+            location2 = rand.nextInt(8);
+            button[location2].setBackgroundResource(R.drawable.out_hole);
+        }
         else
             button[location].setBackgroundResource(R.drawable.out_hole);
     }
@@ -174,17 +179,6 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
         }.run();
     }
 
-    public void playWinSound() {
-
-        new Runnable() {
-            @Override
-            public void run() {
-                mp_miss = MediaPlayer.create(getBaseContext(), (R.raw.applause));
-                mp_miss.start();
-            }
-        }.run();
-    }
-
     public void playLoseSound() {
 
         new Runnable() {
@@ -196,6 +190,16 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
         }.run();
     }
 
+    public void playBombHitSound() {
+
+        new Runnable() {
+            @Override
+            public void run() {
+                mp_bomb_hit = MediaPlayer.create(getBaseContext(), (R.raw.bomb_hit));
+                mp_bomb_hit.start();
+            }
+        }.run();
+    }
 
     @Override
     public void onClick(View view) {
@@ -205,12 +209,9 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
                 playHitSound();
                 player.increaseScore();
                 clickedButton.setBackgroundResource(R.drawable.mole_hole_new);
-                if (player.getScore() >= WIN_SCORE) {
-                    playWinSound();
-                    gameOver();
-                }
             } else if(bombHit(clickedButton)) {
-                // TODO: bomb sound
+                playBombHitSound();
+                wrongAnimation();
                 player.decreaseScore();
                 clickedButton.setBackgroundResource(R.drawable.mole_hole_new);
             }
@@ -225,14 +226,31 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    private void wrongAnimation() {
+        final float FREQ = 3f;
+        final float DECAY = 2f;
+        TimeInterpolator decayingSineWave = new TimeInterpolator() {
+            @Override
+            public float getInterpolation(float input) {
+                double raw = Math.sin(FREQ * input * 2 * Math.PI);
+                return (float)(raw * Math.exp(-input * DECAY));
+            }
+        };
+
+        button[location].animate()
+                .yBy(-100)
+                .xBy(-100)
+                .setInterpolator(decayingSineWave)
+                .setDuration(400)
+                .start();
+    }
+
     private void setLocation() {
         locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            String fineLocationPermission = Manifest.permission.ACCESS_FINE_LOCATION;
-            String coarseLocationPermission = Manifest.permission.ACCESS_COARSE_LOCATION;
-            if (getApplicationContext().checkSelfPermission(fineLocationPermission) != PackageManager.PERMISSION_GRANTED ||
-                    getApplicationContext().checkSelfPermission(coarseLocationPermission) != PackageManager.PERMISSION_GRANTED) {
+            if (getApplicationContext().checkSelfPermission(FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                    getApplicationContext().checkSelfPermission(COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // The user blocked the location services of THIS app / not yet approved
             }
         }
