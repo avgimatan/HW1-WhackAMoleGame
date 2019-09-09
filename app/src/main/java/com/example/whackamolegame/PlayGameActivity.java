@@ -221,7 +221,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
             else {
                 playMissSound();
                 player.increaseMisses();
-                if (player.getMisses() >= MAX_MISSES) {
+                if (player.getMisses() == MAX_MISSES) {
                     playLoseSound();
                     gameOver();
                 }

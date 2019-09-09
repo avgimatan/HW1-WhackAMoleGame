@@ -68,7 +68,7 @@ public class EndGameActivity extends AppCompatActivity implements View.OnClickLi
         tableLayout = findViewById(R.id.highScoreTable);
         playAgainButton = findViewById(R.id.btn_play_again);
 
-        if(isLose(player))
+        if(isWin(player))
             announcementTextView.setText("Game Over!");
         else
             announcementTextView.setText("You Lose!");
@@ -79,7 +79,7 @@ public class EndGameActivity extends AppCompatActivity implements View.OnClickLi
         playAgainButton.setOnClickListener(this);
     }
 
-    public boolean isLose(Player p) {
+    public boolean isWin(Player p) {
         if (p.getMisses() >= MAX_MISSES)
             return false;
         return true;
@@ -159,20 +159,8 @@ public class EndGameActivity extends AppCompatActivity implements View.OnClickLi
 
     public boolean gpsPermission(DocumentSnapshot documentSnapshot) {
         return player.isLocationPermission() &&
-                documentSnapshot.getDouble("lon") != null &&
-                documentSnapshot.getDouble("lon") != null;
-    }
-
-
-    public static class DebugExampleTwoFragment extends Fragment {
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            EditText v = new EditText(getActivity());
-            v.setText("Hello Fragment!");
-            return v;
-        }
+                documentSnapshot.contains("lat") &&
+                documentSnapshot.contains("lon");
     }
 
     public void setGoogleMap(GoogleMap googleMap, double lat, double lon) {

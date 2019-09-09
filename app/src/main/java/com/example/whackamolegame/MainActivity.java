@@ -27,8 +27,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         editTextName = findViewById(R.id.txt_name);
         startButton = findViewById(R.id.btn_start);
-        startButton.setOnClickListener(this);
         getGoogleMapsPermissions();
+        startButton.setOnClickListener(this);
+
     }
 
     public boolean isInputEmpty(String name) {
