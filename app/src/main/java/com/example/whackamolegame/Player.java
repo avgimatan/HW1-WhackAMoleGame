@@ -7,11 +7,13 @@ class Player implements Serializable {
     private String name;
     private int score;
     private int misses;
+    private boolean locationPermission;
 
     public Player() {
         this.name = "";
         this.score = 0;
         this.misses = 0;
+        this.locationPermission = false;
     }
 
     public void setName(String name) {
@@ -36,6 +38,14 @@ class Player implements Serializable {
 
     public int getMisses() {
         return misses;
+    }
+
+    public boolean isLocationPermission() {
+        return locationPermission;
+    }
+
+    public void setLocationPermission(boolean locationPermission) {
+        this.locationPermission = locationPermission;
     }
 
     public void increaseScore() {

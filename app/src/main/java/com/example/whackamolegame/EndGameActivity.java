@@ -1,8 +1,13 @@
 package com.example.whackamolegame;
 
+
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,37 +15,54 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-public class EndGameActivity extends AppCompatActivity implements View.OnClickListener, Finals {
+public class EndGameActivity extends AppCompatActivity implements View.OnClickListener, Finals, OnMapReadyCallback {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TableLayout tableLayout;
     private Player player;
-    private Location userLocation;
     private double lat, lon;
+
+    private LinearLayout linearLayoutFragment;
+
+    private GoogleMap googleMap;
+    private MapFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end_game);
 
-        TextView nameTextView, announcementTextView, pointsTextView;
+        TextView announcementTextView, pointsTextView;
         Button playAgainButton;
 
-        player = (Player) getIntent().getSerializableExtra("player");
+        mapFragment = MapFragment.newInstance();
+        final FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.add(R.id.map_holder, mapFragment);
+        transaction.commit();
 
+
+
+        player = (Player) getIntent().getSerializableExtra("player");
+        linearLayoutFragment = findViewById(R.id.linear_fragment);
         announcementTextView = findViewById(R.id.txt_announcement);
         pointsTextView = findViewById(R.id.txt_points_result);
         tableLayout = findViewById(R.id.highScoreTable);
@@ -106,9 +128,20 @@ public class EndGameActivity extends AppCompatActivity implements View.OnClickLi
                         tableRow.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                lon = documentSnapshot.getDouble("lon");
-                                lat = documentSnapshot.getDouble("lat");
-                                Toast.makeText(getApplicationContext(), documentSnapshot.get("name").toString(), Toast.LENGTH_SHORT).show();
+                                if (gpsPermission(documentSnapshot)) {
+                                    lon = documentSnapshot.getDouble("lon");
+                                    lat = documentSnapshot.getDouble("lat");
+                                    mapFragment.getMapAsync(new OnMapReadyCallback() {
+                                        @Override
+                                        public void onMapReady(GoogleMap googleMap) {
+                                            setGoogleMap(googleMap,lat,lon);
+                                        }
+                                    });
+
+                                    linearLayoutFragment.setVisibility(View.VISIBLE);
+                                }
+                                else
+                                    Toast.makeText(getApplicationContext(), "No GPS Permission", Toast.LENGTH_SHORT).show();
                             }
                         });
                         tableLayout.addView(tableRow);
@@ -119,6 +152,16 @@ public class EndGameActivity extends AppCompatActivity implements View.OnClickLi
                 });
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+    }
+
+    public boolean gpsPermission(DocumentSnapshot documentSnapshot) {
+        return player.isLocationPermission() &&
+                documentSnapshot.getDouble("lon") != null &&
+                documentSnapshot.getDouble("lon") != null;
+    }
 
 
     public static class DebugExampleTwoFragment extends Fragment {
@@ -130,5 +173,25 @@ public class EndGameActivity extends AppCompatActivity implements View.OnClickLi
             v.setText("Hello Fragment!");
             return v;
         }
+    }
+
+    public void setGoogleMap(GoogleMap googleMap, double lat, double lon) {
+        this.googleMap = googleMap;
+        //googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE); // Unmark to see the changes...
+
+        boolean isAllowedToUseLocation = isPermissionForLocationServicesGranted();
+        if (isAllowedToUseLocation) {
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lon),18f));
+            googleMap.addMarker(new MarkerOptions()
+                .draggable(true)
+                .position(new LatLng(lat,lon)));
+        }
+    }
+
+    private boolean isPermissionForLocationServicesGranted() {
+        return android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
+                (!(checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                        checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED));
+
     }
 }

@@ -61,8 +61,10 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
             button[i].setOnClickListener(this);
         }
 
-        locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
-        setLocation();
+        if (player.isLocationPermission()){
+            locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+            setLocation();
+        }
 
         timer = new CountDownTimer(30000, 1000) {
 
@@ -123,9 +125,10 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
         Map<String, Object> user = new HashMap<>();
         user.put("name", player.getName());
         user.put("score", player.getScore());
-        user.put("lat", currentLocation.getLatitude());
-        user.put("lon", currentLocation.getLongitude());
-
+        if (player.isLocationPermission()) {
+            user.put("lat", currentLocation.getLatitude());
+            user.put("lon", currentLocation.getLongitude());
+        }
         db.collection("HighScore")
                 .add(user)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -251,7 +254,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (getApplicationContext().checkSelfPermission(FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                     getApplicationContext().checkSelfPermission(COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // The user blocked the location services of THIS app / not yet approved
+                return;
             }
         }
         if (currentLocation == null) {
