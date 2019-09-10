@@ -67,10 +67,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (!checkPermission()) {
             ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
         }
-
-        if (checkPermission()) {
-            player.setLocationPermission(true);
-        }
     }
 
 }

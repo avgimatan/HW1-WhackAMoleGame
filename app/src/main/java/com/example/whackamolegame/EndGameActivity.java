@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -157,8 +158,13 @@ public class EndGameActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+    public boolean checkPermission() {
+        return ContextCompat.checkSelfPermission(this.getApplicationContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this.getApplicationContext(), COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+    }
+
     public boolean gpsPermission(DocumentSnapshot documentSnapshot) {
-        return player.isLocationPermission() &&
+        return checkPermission() &&
                 documentSnapshot.contains("lat") &&
                 documentSnapshot.contains("lon");
     }

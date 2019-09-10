@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -61,7 +62,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
             button[i].setOnClickListener(this);
         }
 
-        if (player.isLocationPermission()){
+        if (checkPermission()){
             locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
             setLocation();
         }
@@ -125,7 +126,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
         Map<String, Object> user = new HashMap<>();
         user.put("name", player.getName());
         user.put("score", player.getScore());
-        if (player.isLocationPermission()) {
+        if (checkPermission()) {
             user.put("lat", currentLocation.getLatitude());
             user.put("lon", currentLocation.getLongitude());
         }
@@ -263,6 +264,11 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
         float metersToUpdate = 1;
         long intervalMilliseconds = 1000;
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, intervalMilliseconds, metersToUpdate, this);
+    }
+
+    public boolean checkPermission() {
+        return ContextCompat.checkSelfPermission(this.getApplicationContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this.getApplicationContext(), COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
