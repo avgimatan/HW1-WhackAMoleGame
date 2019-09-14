@@ -1,6 +1,7 @@
 package com.example.whackamolegame;
 
 import android.animation.TimeInterpolator;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -8,9 +9,13 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -21,10 +26,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -123,30 +134,41 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
 
     public void gameOver() {
 
-        Map<String, Object> user = new HashMap<>();
-        user.put("name", player.getName());
-        user.put("score", player.getScore());
-        if (checkPermission()) {
-            user.put("lat", currentLocation.getLatitude());
-            user.put("lon", currentLocation.getLongitude());
-        }
-        db.collection("HighScore")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Intent intent = new Intent(getApplicationContext(), EndGameActivity.class);
-                        intent.putExtra("player", player);
-                        startActivity(intent);
-                        timer.cancel();
-                        finish();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(PlayGameActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        if(isNetworkAvailable()) {
+            Map<String, Object> user = new HashMap<>();
+            user.put("name", player.getName());
+            user.put("score", player.getScore());
+            if (checkPermission()) {
+                user.put("lat", currentLocation.getLatitude());
+                user.put("lon", currentLocation.getLongitude());
             }
-        });
+            db.collection("HighScore")
+                    .add(user)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            endGame();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(PlayGameActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else {
+            Toast.makeText(PlayGameActivity.this, "No internet connection", Toast.LENGTH_SHORT).show();
+            endGame();
+        }
+
+    }
+
+    public void endGame() {
+        Intent intent = new Intent(getApplicationContext(), EndGameActivity.class);
+        intent.putExtra("player", player);
+        startActivity(intent);
+        timer.cancel();
+        finish();
     }
 
     public void playLastSecondsSound(long sec) {
@@ -269,6 +291,13 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnClickL
     public boolean checkPermission() {
         return ContextCompat.checkSelfPermission(this.getApplicationContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this.getApplicationContext(), COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     @Override
